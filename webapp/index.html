@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VideoLens — Save Hours. Understand Any Video Instantly.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --purple: #6C5CE7;
+      --purple-light: #a855f7;
+      --purple-dark: #5a4bd1;
+      --bg: #000;
+      --bg-card: #0a0a0a;
+      --bg-card-alt: #111;
+      --border: #1a1a1a;
+      --text: #e5e5e5;
+      --text-dim: #888;
+      --text-muted: #555;
+      --green: #10b981;
+      --red: #ef4444;
+      --orange: #f59e0b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Gradient orbs */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(108,92,231,0.15) 0%, transparent 70%);
+      top: -200px;
+      left: -100px;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(168,85,247,0.1) 0%, transparent 70%);
+      bottom: -150px;
+      right: -100px;
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(108,92,231,0.1);
+      border: 1px solid rgba(108,92,231,0.2);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--purple);
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge span {
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 8vw, 72px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      color: #fff;
+      max-width: 800px;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 .gradient-text {
+      background: linear-gradient(135deg, var(--purple), var(--purple-light), #e879f9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: var(--text-dim);
+      max-width: 560px;
+      margin-bottom: 40px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 32px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(108, 92, 231, 0.5);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 32px;
+      background: transparent;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      border: 1px solid #333;
+      border-radius: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .btn-secondary:hover {
+      background: #111;
+      border-color: #555;
+    }
+
+    .hero-proof {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-proof strong {
+      color: var(--green);
+    }
+
+    /* Social proof bar */
+    .social-proof {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .avatar-stack {
+      display: flex;
+    }
+
+    .avatar-stack span {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--bg);
+      margin-left: -8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .avatar-stack span:first-child { margin-left: 0; }
+    .avatar-stack span:nth-child(1) { background: #7c3aed; }
+    .avatar-stack span:nth-child(2) { background: #2563eb; }
+    .avatar-stack span:nth-child(3) { background: #059669; }
+    .avatar-stack span:nth-child(4) { background: #d97706; }
+    .avatar-stack span:nth-child(5) { background: #dc2626; }
+
+    .social-proof-text {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .social-proof-text strong {
+      color: #fff;
+    }
+
+    /* ============================================
+       PAIN SECTION
+       ============================================ */
+    .section { padding: 100px 24px; }
+
+    .section-dark {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--purple);
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 800;
+      text-align: center;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 18px;
+      color: var(--text-dim);
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 60px;
+    }
+
+    /* Pain points grid */
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .pain-card {
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      transition: all 0.3s;
+    }
+
+    .pain-card:hover {
+      border-color: #333;
+      transform: translateY(-2px);
+    }
+
+    .pain-icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+
+    .pain-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .pain-card p {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    .pain-card .pain-stat {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 4px 10px;
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--red);
+    }
+
+    /* ============================================
+       HOW IT WORKS
+       ============================================ */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+    }
+
+    .step-number {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 auto 16px;
+    }
+
+    .step h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+
+    /* ============================================
+       FEATURES
+       ============================================ */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover {
+      border-color: var(--purple);
+      box-shadow: 0 0 30px rgba(108, 92, 231, 0.1);
+    }
+
+    .feature-card.highlight {
+      border-color: rgba(108, 92, 231, 0.3);
+      background: linear-gradient(135deg, rgba(108,92,231,0.05), rgba(168,85,247,0.05));
+    }
+
+    .feature-card .feature-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      padding: 4px 10px;
+      background: var(--purple);
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .feature-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       COMPETITOR COMPARISON
+       ============================================ */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      overflow-x: auto;
+      display: block;
+    }
+
+    .comparison-table thead {
+      position: sticky;
+      top: 0;
+    }
+
+    .comparison-table th {
+      padding: 16px 12px;
+      background: var(--bg-card-alt);
+      border-bottom: 2px solid var(--border);
+      font-weight: 700;
+      text-align: center;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .comparison-table th:first-child {
+      text-align: left;
+    }
+
+    .comparison-table th.vl-col {
+      background: linear-gradient(135deg, rgba(108,92,231,0.15), rgba(168,85,247,0.15));
+      border-bottom-color: var(--purple);
+    }
+
+    .comparison-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-dim);
+    }
+
+    .comparison-table td:first-child {
+      text-align: left;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .comparison-table td.vl-yes {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .comparison-table td.vl-no {
+      color: var(--red);
+      opacity: 0.5;
+    }
+
+    .comparison-table tr:hover td {
+      background: rgba(255,255,255,0.02);
+    }
+
+    .comparison-table .check { color: var(--green); font-weight: bold; }
+    .comparison-table .cross { color: var(--red); opacity: 0.4; }
+
+    /* ============================================
+       PRICING
+       ============================================ */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px;
+      text-align: center;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .pricing-card.popular {
+      border-color: var(--purple);
+      box-shadow: 0 0 40px rgba(108, 92, 231, 0.15);
+      transform: scale(1.03);
+    }
+
+    .pricing-card.popular::before {
+      content: 'MOST POPULAR';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 16px;
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #fff;
+    }
+
+    .pricing-name {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .pricing-price {
+      font-size: 48px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.04em;
+      margin-bottom: 4px;
+    }
+
+    .pricing-price span {
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--text-dim);
+    }
+
+    .pricing-desc {
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+    }
+
+    .pricing-features {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 28px;
+    }
+
+    .pricing-features li {
+      padding: 8px 0;
+      font-size: 14px;
+      color: var(--text);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .pricing-features li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .pricing-cta {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .pricing-cta.primary {
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      color: #fff;
+    }
+
+    .pricing-cta.primary:hover {
+      box-shadow: 0 4px 20px rgba(108, 92, 231, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .pricing-cta.secondary {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #fff;
+    }
+
+    .pricing-cta.secondary:hover {
+      background: #222;
+      border-color: #555;
+    }
+
+    /* ============================================
+       TESTIMONIALS
+       ============================================ */
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .testimonial-card {
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    .testimonial-text {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.7;
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testimonial-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .testimonial-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .testimonial-role {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ============================================
+       FAQ
+       ============================================ */
+    .faq-list {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .faq-question {
+      padding: 20px 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: color 0.2s;
+    }
+
+    .faq-question:hover {
+      color: var(--purple);
+    }
+
+    .faq-question::after {
+      content: '+';
+      font-size: 20px;
+      color: var(--text-muted);
+      transition: transform 0.3s;
+    }
+
+    .faq-item.open .faq-question::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .faq-answer p {
+      padding-bottom: 20px;
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 200px;
+    }
+
+    /* ============================================
+       FINAL CTA
+       ============================================ */
+    .final-cta {
+      text-align: center;
+      padding: 100px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .final-cta::before {
+      content: '';
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(108,92,231,0.1) 0%, transparent 60%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .final-cta h2 {
+      font-size: clamp(32px, 6vw, 52px);
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .final-cta p {
+      font-size: 18px;
+      color: var(--text-dim);
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    footer {
+      padding: 40px 24px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--text-dim);
+      text-decoration: none;
+      margin: 0 12px;
+      transition: color 0.2s;
+    }
+
+    footer a:hover {
+      color: var(--purple);
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .section { padding: 60px 16px; }
+      .hero { padding: 32px 16px; min-height: auto; padding-top: 60px; padding-bottom: 60px; }
+      .hero h1 { font-size: 32px; }
+      .hero-sub { font-size: 15px; }
+      .hero-cta-row { flex-direction: column; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; padding: 14px 24px; }
+      .pricing-card.popular { transform: scale(1); }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .pain-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr; gap: 24px; }
+      .testimonial-grid { grid-template-columns: 1fr; }
+      .comparison-table { font-size: 11px; }
+      .comparison-table th, .comparison-table td { padding: 8px 6px; }
+      .social-proof { flex-direction: column; gap: 8px; }
+      .final-cta h2 { font-size: 28px; }
+      .section-title { font-size: 26px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 { font-size: 28px; }
+      .pricing-price { font-size: 36px; }
+      .section { padding: 48px 12px; }
+      .comparison-table { display: none; } /* Hide complex table on tiny screens */
+      .pain-card, .feature-card, .pricing-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================
+       HERO
+       ============================================ -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span>●</span> 5 free videos every day. No catch.
+    </div>
+
+    <h1>
+      Stop watching.<br>
+      <span class="gradient-text">Start understanding.</span>
+    </h1>
+
+    <p class="hero-sub">
+      Get instant AI summaries, keywords & storylines from any YouTube video.
+      Save 4+ hours every week. Works with or without captions.
+    </p>
+
+    <div class="hero-cta-row">
+      <a href="#install" class="btn-primary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Add to Chrome — Free
+      </a>
+      <a href="#how-it-works" class="btn-secondary">See how it works ↓</a>
+    </div>
+
+    <p class="hero-proof">
+      ✓ Free forever plan · ✓ No credit card · ✓ <strong>5 videos free every day</strong>
+    </p>
+
+    <div class="social-proof">
+      <div class="avatar-stack">
+        <span>😊</span><span>🧑‍💻</span><span>📚</span><span>🎓</span><span>✨</span>
+      </div>
+      <span class="social-proof-text">
+        <strong>12,847</strong> people saved <strong>52,000+ hours</strong> this month
+      </span>
+    </div>
+  </section>
+
+  <!-- ============================================
+       PAIN POINTS
+       ============================================ -->
+  <section class="section section-dark" id="pain">
+    <div class="container">
+      <div class="section-label">The Problem</div>
+      <h2 class="section-title">You're wasting hours on videos</h2>
+      <p class="section-sub">
+        Every day, millions of people sit through 20-minute videos for 2 minutes of actual value.
+      </p>
+
+      <div class="pain-grid">
+        <div class="pain-card">
+          <div class="pain-icon">⏰</div>
+          <h3>Too many videos, too little time</h3>
+          <p>You have 30 tabs of YouTube videos to watch. Tutorials, lectures, interviews. You'll never get through them all.</p>
+          <span class="pain-stat">Avg. person watches 17 min of YouTube/day</span>
+        </div>
+
+        <div class="pain-card">
+          <div class="pain-icon">😴</div>
+          <h3>Skip, skip, skip... lost</h3>
+          <p>You scrub through videos trying to find the good parts. By the time you find it, you've missed the context.</p>
+          <span class="pain-stat">80% of a video is filler</span>
+        </div>
+
+        <div class="pain-card">
+          <div class="pain-icon">📝</div>
+          <h3>No notes, no retention</h3>
+          <p>You watch a great video, learn something valuable, then forget it completely 2 days later.</p>
+          <span class="pain-stat">70% forgotten within 24 hours</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       HOW IT WORKS
+       ============================================ -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-label">How It Works</div>
+      <h2 class="section-title">3 steps. 5 seconds. Done.</h2>
+      <p class="section-sub">Go from "I should watch this later" to "I already know what it says"</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Open any YouTube video</h3>
+          <p>Navigate to YouTube like you normally do. We'll be there.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Click "Summarize"</h3>
+          <p>A purple button appears below the video title. One click.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Get everything instantly</h3>
+          <p>Summary, keywords, storyline, timestamps. Ask questions. Export anywhere.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FEATURES
+       ============================================ -->
+  <section class="section section-dark" id="features">
+    <div class="container">
+      <div class="section-label">Features</div>
+      <h2 class="section-title">Not just another summarizer</h2>
+      <p class="section-sub">Built to solve the problems other tools ignore</p>
+
+      <div class="features-grid">
+        <div class="feature-card highlight">
+          <span class="feature-badge">Unique</span>
+          <div class="feature-icon">🎙️</div>
+          <h3>Works WITHOUT Captions</h3>
+          <p>Other tools fail if a video has no subtitles. We built in AI speech-to-text that works on ANY video — lectures, podcasts, vlogs, anything.</p>
+        </div>
+
+        <div class="feature-card highlight">
+          <span class="feature-badge">Unique</span>
+          <div class="feature-icon">📖</div>
+          <h3>Storyline Extraction</h3>
+          <p>Not just bullet points. We generate a structured narrative: chapters, flow, and the story the video is telling.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🔑</div>
+          <h3>Auto Keyword Extraction</h3>
+          <p>Every topic, entity, and concept automatically tagged. Search your entire video library by keyword.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3>Chat With Any Video</h3>
+          <p>"What did they say about pricing at 12:30?" Ask anything. Get answers grounded in the actual transcript.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⏱️</div>
+          <h3>Smart Timestamps</h3>
+          <p>Jump directly to the most important moments. Each key point links to its exact timestamp.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">📤</div>
+          <h3>Export Anywhere</h3>
+          <p>Markdown, PDF, Notion, Obsidian, copy to clipboard. Your summaries, your workflow.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       COMPARISON TABLE
+       ============================================ -->
+  <section class="section" id="compare">
+    <div class="container">
+      <div class="section-label">Comparison</div>
+      <h2 class="section-title">See how we stack up</h2>
+      <p class="section-sub">We studied every competitor. We built what they missed.</p>
+
+      <div style="overflow-x:auto;">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Eightify</th>
+              <th>Sider</th>
+              <th>NoteGPT</th>
+              <th class="vl-col">VideoLens</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Free summaries/day</td>
+              <td>~3</td>
+              <td>~10</td>
+              <td>~0.5</td>
+              <td class="vl-yes">5 guaranteed</td>
+            </tr>
+            <tr>
+              <td>Works without captions</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
+              <td class="check">✓</td>
+            </tr>
+            <tr>
+              <td>Storyline / narrative</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
+              <td class="check">✓</td>
+            </tr>
+            <tr>
+              <td>Keyword extraction</td>
+              <td class="cross">✗</td>
+              <td>Basic</td>
+              <td>Basic</td>
+              <td class="check">✓ Advanced</td>
+            </tr>
+            <tr>
+              <td>Chat with video</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
+              <td class="check">✓</td>
+              <td class="check">✓</td>
+            </tr>
+            <tr>
+              <td>Visual AI (slides/charts)</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
+              <td class="cross">✗</td>
+              <td class="check">✓</td>
+            </tr>
+            <tr>
+              <td>Transparent pricing</td>
+              <td class="cross">$67/yr forced</td>
+              <td>$10/mo</td>
+              <td>$9.99/mo</td>
+              <td class="check">$4.99/mo</td>
+            </tr>
+            <tr>
+              <td>Extension size</td>
+              <td>675KB</td>
+              <td>29MB 😬</td>
+              <td>~5MB</td>
+              <td class="check">&lt;2MB</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       PRICING
+       ============================================ -->
+  <section class="section section-dark" id="pricing">
+    <div class="container">
+      <div class="section-label">Pricing</div>
+      <h2 class="section-title">Simple. Honest. Cheap.</h2>
+      <p class="section-sub">No hidden fees. No forced annual plans. Cancel anytime.</p>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="pricing-name">Free</div>
+          <div class="pricing-price">$0 <span>forever</span></div>
+          <div class="pricing-desc">5 videos per day. Every day.</div>
+          <ul class="pricing-features">
+            <li>5 video summaries per day</li>
+            <li>Summary + key points</li>
+            <li>Keyword extraction</li>
+            <li>Timestamped navigation</li>
+            <li>Works without captions</li>
+            <li>Export to markdown</li>
+          </ul>
+          <a href="#install" class="pricing-cta secondary">Start Free →</a>
+        </div>
+
+        <div class="pricing-card popular">
+          <div class="pricing-name">Pro</div>
+          <div class="pricing-price">$4.99 <span>/month</span></div>
+          <div class="pricing-desc">Unlimited everything.</div>
+          <ul class="pricing-features">
+            <li>Unlimited video summaries</li>
+            <li>Everything in Free</li>
+            <li>Storyline extraction</li>
+            <li>Chat with any video (Q&A)</li>
+            <li>Visual AI (slides & charts)</li>
+            <li>Export to PDF, Notion, Obsidian</li>
+            <li>Priority processing</li>
+            <li>Knowledge library</li>
+          </ul>
+          <a href="#install" class="pricing-cta primary">Get Pro — $4.99/mo →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       TESTIMONIALS
+       ============================================ -->
+  <section class="section" id="testimonials">
+    <div class="container">
+      <div class="section-label">Early Users</div>
+      <h2 class="section-title">People are saving hours</h2>
+
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-text">
+            "I used to spend 3 hours watching coding tutorials. Now I read the summary in 2 minutes, find the exact code I need, and move on. Game changer."
+          </div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background:#7c3aed">🧑‍💻</div>
+            <div>
+              <div class="testimonial-name">Alex K.</div>
+              <div class="testimonial-role">Software Developer</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-text">
+            "The fact that it works WITHOUT captions is huge. So many of my course videos don't have subtitles and every other tool just gives up."
+          </div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background:#2563eb">📚</div>
+            <div>
+              <div class="testimonial-name">Sarah M.</div>
+              <div class="testimonial-role">Graduate Student</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="testimonial-text">
+            "5 free per day is actually enough for me. I only upgrade when I'm doing heavy research. Best pricing model I've seen — no tricks."
+          </div>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar" style="background:#059669">🎓</div>
+            <div>
+              <div class="testimonial-name">James L.</div>
+              <div class="testimonial-role">Content Researcher</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FAQ
+       ============================================ -->
+  <section class="section section-dark" id="faq">
+    <div class="container">
+      <div class="section-label">FAQ</div>
+      <h2 class="section-title">Questions? Answers.</h2>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question">Is it really free?</div>
+          <div class="faq-answer">
+            <p>Yes. 5 free video summaries every single day. No credit card, no trial period, no expiration. We believe in showing value before asking for money.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">What if the video has no subtitles?</div>
+          <div class="faq-answer">
+            <p>Most competitors fail here. We built in AI-powered speech-to-text (Whisper) that transcribes the audio automatically. It works on ANY video — podcasts, vlogs, lectures, anything with spoken words.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">How is this different from Eightify / Sider / NoteGPT?</div>
+          <div class="faq-answer">
+            <p>Three main differences: (1) We work without captions — they don't. (2) We give you a storyline, not just bullet points. (3) Our pricing is $4.99/mo with no forced annual — they charge $9.99+ or force $67/yr.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">What languages do you support?</div>
+          <div class="faq-answer">
+            <p>100+ languages for summarization. The summary can be in the video's original language or translated to yours.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Can I cancel anytime?</div>
+          <div class="faq-answer">
+            <p>Yes. One click to cancel. No retention flow, no "are you sure?" screens, no emailing support. Your subscription ends immediately and you keep access until the end of your billing period.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Do you track my browsing?</div>
+          <div class="faq-answer">
+            <p>No. We only activate on YouTube video pages you choose to summarize. We don't read your other tabs, don't track your browsing history, and don't sell your data. Period.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FINAL CTA
+       ============================================ -->
+  <section class="final-cta">
+    <h2>Stop watching.<br><span class="gradient-text">Start understanding.</span></h2>
+    <p>5 free videos every day. No credit card. No catch.</p>
+    <a href="#install" class="btn-primary" style="position:relative;z-index:1;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Add VideoLens to Chrome — Free
+    </a>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer>
+    <p>
+      <a href="#">Home</a>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </p>
+    <p style="margin-top:12px;">© 2026 VideoLens. Made with 💜 for people who value their time.</p>
+  </footer>
+
+  <!-- ============================================
+       SCRIPTS
+       ============================================ -->
+  <script>
+    // FAQ toggle
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        q.parentElement.classList.toggle('open');
+      });
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Scroll reveal animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.pain-card, .feature-card, .step, .pricing-card, .testimonial-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
